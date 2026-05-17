@@ -3,7 +3,7 @@ export default function Home() {
     <main style={{ width: '100vw', height: '100vh', margin: 0, padding: 0, overflow: 'hidden', backgroundColor: '#f4f5f7' }}>
       <iframe
         // ⚠️ SANGAT PENTING: Ganti URL di bawah dengan link Web App Google Script Anda
-        src="https://script.google.com/macros/s/AKfycbwDI5XLcFVSnDt7iXJBwsSwVEYD1jyoblm_-E4OVtO-jnIWD7yIv6Q01ySMWhRq5a2z/exec"
+        src="https://script.google.com/macros/s/AKfycbyb1qGyivOWXzim0cOJLFek9_OCg5g3CV78lYw44tCneuXxrKMCfuw2VmRlOB7HKi5O/exec"
         style={{
           width: '100%',
           height: '100%',
