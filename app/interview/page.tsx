@@ -15,7 +15,7 @@ export default async function InterviewPage({
   const nama = params.nama || '';
 
   const gasUrl =
-    `https://script.google.com/macros/s/AKfycbxMc2PVEG7TwEkdTh8cg-FO45ZGJe1m42o1gmF6ksWQWxfrByyFPETLBRxeFrv50LmQ/exec?page=interview&id=${encodeURIComponent(id)}&nama=${encodeURIComponent(nama)}`;
+    `https://script.google.com/macros/s/AKfycbzQ2XbtR_K3Fp6bsdHRx0oFnxNYjzhRQ8dj6JoyucMbomE2EUzwwxpBzn8xdvAKHqO6/exec?page=interview&id=${encodeURIComponent(id)}&nama=${encodeURIComponent(nama)}`;
 
   return (
     <main
