@@ -10,7 +10,7 @@ export default function InterviewPage() {
   const nama = params.get('nama');
 
   const gasUrl =
-    `https://script.google.com/macros/s/AKfycbwd_umF5PhbBzkBdA7VKl9t-du-EZWpKpbjkAJp-0mWSREOS9K7O7MYewLjvpkyZPjK/exec?page=interview&id=${encodeURIComponent(id || '')}&nama=${encodeURIComponent(nama || '')}`;
+    `https://script.google.com/macros/s/AKfycbxMc2PVEG7TwEkdTh8cg-FO45ZGJe1m42o1gmF6ksWQWxfrByyFPETLBRxeFrv50LmQ/exec?page=interview&id=${encodeURIComponent(id || '')}&nama=${encodeURIComponent(nama || '')}`;
 
   return (
     <main style={{
