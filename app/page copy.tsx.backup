@@ -1,0 +1,49 @@
+export const dynamic = 'force-dynamic'; // Paksa Server-Side Rendering (Anti Error Build & Anti Cache)
+
+export default async function Home() {
+  // ⚠️ SANGAT PENTING: Ganti URL di bawah dengan link 'Publish to Web' (format CSV) 
+  // yang mengarah KHUSUS ke tab 'Config' di spreadsheet Kuis Anda.
+  const CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTkvZcJ5UeWCOebSzPXN81pGhGP2gfmKKzAbYmvLyj5q8uq7jP7tkNZEzNlMPvaL1kED9BqUOy1pYV7/pub?gid=924653219&single=true&output=csv";
+  let gasUrl = "";
+
+  try {
+    const res = await fetch(CSV_URL, { cache: 'no-store' });
+    const csvText = await res.text();
+    const rows = csvText.split('\n');
+    console.log("Masuk THree");
+
+    for (const row of rows) {
+      // Kita mencari baris yang kolom pertamanya berisi "deploymentUrl"
+      if (row.includes('deploymentUrl')) {
+        // Ambil kolom sebelahnya (URL), lalu bersihkan dari karakter "aneh" seperti \r
+        gasUrl = row.split(',')[1].replace(/['"\r]/g, '').trim(); 
+        break;
+        console.log(gasUrl);
+      }
+    }
+  } catch (error) {
+    console.error("Gagal menarik data Config dari Spreadsheet:", error);
+  }
+
+  // Gunakan URL yang didapat (Bisa ditambahkan parameter lain jika nanti dibutuhkan)
+  const finalUrl = gasUrl; 
+
+  return (
+    <main className="w-full h-screen overflow-hidden bg-[#f4f5f7]">
+      {finalUrl ? (
+        <iframe 
+          src={finalUrl} 
+          className="w-full h-full border-0 block" 
+          title="Command Center SE2026 - Ujian"   
+          allowFullScreen
+        />
+      ) : (
+        <div className="flex h-full flex-col items-center justify-center bg-white">
+          <div className="text-6xl mb-4">⚠️</div>
+          <h2 className="text-xl font-bold text-gray-800">Koneksi Terputus</h2>
+          <p className="text-gray-500 mt-2">Gagal memuat sistem ujian. Periksa Link CSV Config.</p>
+        </div>
+      )}
+    </main>
+  );
+}

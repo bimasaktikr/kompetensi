@@ -1,0 +1,63 @@
+export const dynamic = 'force-dynamic'; // Paksa Server-Side Rendering (Anti Error Build & Anti Cache)
+
+export default async function Home() {
+  const CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTkvZcJ5UeWCOebSzPXN81pGhGP2gfmKKzAbYmvLyj5q8uq7jP7tkNZEzNlMPvaL1kED9BqUOy1pYV7/pub?gid=924653219&single=true&output=csv";
+  
+  let gasUrl = "";
+  let debugLog = ""; // Variabel untuk menyimpan log error agar bisa dikirim ke browser
+
+  try {
+    const res = await fetch(CSV_URL, { cache: 'no-store' });
+    const csvText = await res.text();
+    
+    // Simpan cuplikan teks CSV ke debug agar kita tahu apa yang ditangkap server
+    debugLog = csvText.substring(0, 100).replace(/\n/g, " "); 
+
+    const rows = csvText.split('\n');
+    
+    for (const row of rows) {
+      if (row.includes('deploymentUrl')) {
+        gasUrl = row.split(',')[1].replace(/['"\r]/g, '').trim(); 
+        break;
+      }
+    }
+  } catch (error: any) {
+    debugLog = `ERROR FETCH: ${error.message}`;
+    console.error("Gagal menarik data Config dari Spreadsheet:", error);
+  }
+
+  const finalUrl = gasUrl; 
+
+  return (
+    <main className="w-full h-screen overflow-hidden bg-[#f4f5f7]">
+      
+      {/* 🌟 RADAR DEBUGGING FRONTEND 🌟 */}
+      <script dangerouslySetInnerHTML={{
+        __html: `
+          console.log("%c🚀 COMMAND CENTER SE2026 - DEBUG MODE", "background: #1a73e8; color: white; padding: 4px 8px; border-radius: 4px; font-weight: bold;");
+          console.log("1. Cek Cuplikan CSV dari Google: ", "${debugLog}");
+          console.log("2. Hasil Ekstraksi URL: ", "${finalUrl ? finalUrl : 'KOSONG / TIDAK DITEMUKAN'}");
+          
+          if(!window.location.href.includes("https")) {
+             console.warn("⚠️ Peringatan: Iframe Google Script kadang menolak dimuat di http://localhost. Coba gunakan URL publik/Vercel.");
+          }
+        `
+      }} />
+
+      {finalUrl ? (
+        <iframe 
+          src={finalUrl} 
+          className="w-full h-full border-0 block" 
+          title="Command Center SE2026 - Ujian" 
+          allowFullScreen
+        />
+      ) : (
+        <div className="flex h-full flex-col items-center justify-center bg-white">
+          <div className="text-6xl mb-4">⚠️</div>
+          <h2 className="text-xl font-bold text-gray-800">Koneksi Terputus</h2>
+          <p className="text-gray-500 mt-2">Gagal memuat sistem ujian. Cek Console Browser (F12) untuk detailnya.</p>
+        </div>
+      )}
+    </main>
+  );
+}
